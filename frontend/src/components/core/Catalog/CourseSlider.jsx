@@ -6,7 +6,7 @@ import "swiper/css";
 import "swiper/css/pagination";
 
 
-import Course_Card from "./Course_Card";
+import course_Card from "./Course_Card";
 
 export default function CourseSlider({ Courses }) {
     console.log("courses",Courses)
@@ -40,7 +40,7 @@ export default function CourseSlider({ Courses }) {
         >
           {Courses.map((course) => (
             <SwiperSlide key={course._id}>
-              <Course_Card
+              <course_Card
                 course={course}
                 Height="h-[250px]"
               />

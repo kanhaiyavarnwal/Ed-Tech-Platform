@@ -2,7 +2,7 @@ import { categories, courseEndpoints } from "../api";
 
 import {toast} from "react-hot-toast"
 import { apiConnector } from "../apiconnectors";
-import { updateCompletedLectures } from "../../slices/viewCourseSlice"
+
 
 const {
      CREATE_COURSE_API,

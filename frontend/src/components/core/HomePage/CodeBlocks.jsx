@@ -1,7 +1,7 @@
 import React from 'react'
 import CtaButton from './Button'
 import { FaAnglesRight } from "react-icons/fa6";
-import HighlightText from './HighlightText'
+
 import { TypeAnimation } from 'react-type-animation';
 
 

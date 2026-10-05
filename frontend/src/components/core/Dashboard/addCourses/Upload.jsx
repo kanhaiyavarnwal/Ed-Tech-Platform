@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import { useDropzone } from "react-dropzone";
 import { FiUploadCloud } from "react-icons/fi";
-import ReactPlayer from "react-player";
+
 
 export default function Upload({
   name,

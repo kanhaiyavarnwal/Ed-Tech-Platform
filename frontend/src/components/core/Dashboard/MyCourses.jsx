@@ -21,7 +21,7 @@ export default function MyCourses() {
         }
      }
      fetchCourses()
-    },[])
+    },[token])
   return (
        <div>
       <div className="mb-14 flex items-center justify-between">

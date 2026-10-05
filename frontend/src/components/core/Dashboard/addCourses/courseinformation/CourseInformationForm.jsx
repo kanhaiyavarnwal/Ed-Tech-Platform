@@ -55,7 +55,7 @@ export default function CourseInformationForm() {
 
 
      getCategories()
-  },[])
+  },[editCourse,setValue,course])
 
 
   const isFormUpdated = () => {

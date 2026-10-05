@@ -9,7 +9,7 @@ import { COURSE_STATUS } from "../../../../../utils/constants"
 import IconBtn from "../../../../common/IconBtn"
 
 export default function PublishCourse() {
-  const { register, handleSubmit, setValue, getValues } = useForm()
+  const {getValues } = useForm()
 
   const dispatch = useDispatch()
   const navigate = useNavigate()
@@ -17,11 +17,15 @@ export default function PublishCourse() {
   const { course } = useSelector((state) => state.course)
   const [loading, setLoading] = useState(false)
 
-  useEffect(() => {
-    if (course?.status === COURSE_STATUS.PUBLISHED) {
-      setValue("public", true)
-    }
-  }, [])
+  // useEffect(() => {
+  //   if (course?.status === COURSE_STATUS.PUBLISHED) {
+  //     setValue("public", true)
+  //   }
+  // }, [])
+
+  const { register, handleSubmit } = useForm({
+    defaultValues: { public: course?.status === COURSE_STATUS.PUBLISHED },
+  })
 
   const goBack = () => {
     dispatch(setStep(2))

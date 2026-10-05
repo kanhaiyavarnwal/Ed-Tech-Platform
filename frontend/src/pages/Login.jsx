@@ -1,3 +1,4 @@
+// import loginImg from "../assets/Images/login.webp"
 import loginImg from "../assets/Images/login.webp"
 import Template from "../components/Auth/Template"
 
