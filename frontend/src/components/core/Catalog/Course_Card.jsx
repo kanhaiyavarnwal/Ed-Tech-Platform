@@ -5,9 +5,9 @@ import { useState,useEffect } from 'react'
 import RatingStars from '../../common/RatingStars'
 
 export default function Course_Card({course,Height}) {
-  console.log("course: in card ", course)
+ 
     const [avgReviewCnt , setAvgReviewCnt] = useState(0)
- console.log("course in course card ", course,Height)
+
     useEffect(()=>{
         const cnt = GetAvgRating(course.ratingAndReviews)
         setAvgReviewCnt(cnt)

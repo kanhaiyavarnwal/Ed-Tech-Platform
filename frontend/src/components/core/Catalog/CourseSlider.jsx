@@ -6,10 +6,10 @@ import "swiper/css";
 import "swiper/css/pagination";
 
 
-import course_Card from "./Course_Card";
+
 
 export default function CourseSlider({ Courses }) {
-    console.log("courses",Courses)
+    // console.log("courses",Courses)
   return (
     <>
       {Courses?.length > 0 ? (

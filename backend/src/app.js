@@ -21,14 +21,15 @@ app.use(express.json())
 app.use(express.urlencoded({extended:true, limit:"16KB"}))
 
 app.use(cors({
-   
+   origin:"http://localhost:3000",
+   credentials:true
 }))
 app.use(cookieParser({}))
 
 app.use(
     fileUpload({
         useTempFiles:true,
-        tempFileDir:"/temp"
+        tempFileDir:"/tmp"
     })
 )
 
@@ -40,16 +41,18 @@ app.use(
   app.use("/api/v1/payment",paymentRoutes)
   app.use("/api/v1/contact",contactRoutes)
 
-  cloudinaryConnect()
-  connectDb()
-  .then(()=>{
-    app.get("/" ,(req  , res)=>{
+  app.get("/" ,(req  , res)=>{
       return res
       .json(
         new ApiResponse(202,User,"your server is up running")
       )
     
     })
+  cloudinaryConnect()
+  connectDb()
+
+  .then(()=>{
+    
   
     app.listen(port , ()=>{
       console.log(`your port no is -> !! ${port}`)

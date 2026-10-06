@@ -20,14 +20,14 @@ export default function Catalog() {
   useEffect(() => {
     // this api for get all category
     const getCategories = async () => {
-      console.log("categories api in catalog: ",categories.COURSE_CATEGORIES_API)
+      // console.log("categories api in catalog: ",categories.COURSE_CATEGORIES_API)
       const response = await apiConnector(
         "GET",
         categories.COURSE_CATEGORIES_API,
       );
-        console.log("response in catalog: ",response)
+        // console.log("response in catalog: ",response)
       const rData = response?.data?.data;
-        console.log("rtable: ",rData)
+        
         // here we select on the basis of catalog name jo choose krenge usi ka id dega or use hm log niche use krenge
       const category_id = rData.filter(
         (ct) =>
@@ -35,7 +35,7 @@ export default function Catalog() {
           catalogName.toLowerCase(),
       )[0]._id;
       //    console.log("categoryid: ",category_id)
-      console.log("catalogName: ", catalogName);
+      // console.log("catalogName: ", catalogName);
       setCategoryId(category_id);
     };
     getCategories();
@@ -45,10 +45,10 @@ export default function Catalog() {
   useEffect(() => {
     // jo choose kiye hai hai usi ka pura page details dega wo 
     const getCategoryDetails = async () => {
-      console.log("categoryId: ", categoryId);
+      // console.log("categoryId: ", categoryId);
       try {
         const res = await getCatalogPageData(categoryId);
-        console.log("res in catalog: ",res)
+        // console.log("res in catalog: ",res)
         setCatalogPageData(res);
       } catch (err) {
         console.log(err.message);

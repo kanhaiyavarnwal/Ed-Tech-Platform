@@ -33,15 +33,15 @@ export default function Navbar() {
       setLoading(true);
 
       try {
-        console.log("category api: ",categories.COURSE_CATEGORIES_API)
+        // console.log("category api: ",categories.COURSE_CATEGORIES_API)
         const res = await apiConnector(
           "GET",
           categories.COURSE_CATEGORIES_API
         );
-        console.log("res in navbar: ",res)
+        // console.log("res in navbar: ",res)
         setSubLinks(res.data.data);
       } catch (err) {
-        console.log(err);
+        console.log(err.message);
       } finally {
         setLoading(false);
       }

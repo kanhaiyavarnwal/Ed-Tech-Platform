@@ -5,6 +5,8 @@ A full-stack EdTech platform built using the MERN stack that enables students to
 
 ---
 
+  // "build": "CI=false react-scripts build",
+
 ## 🚀 Features
 
 ### 👨‍🎓 Student
