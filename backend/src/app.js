@@ -21,8 +21,7 @@ app.use(express.json())
 app.use(express.urlencoded({extended:true, limit:"16KB"}))
 
 app.use(cors({
-   // origin:"http://localhost:3000",  // frontend url
-    credentials:true,
+   
 }))
 app.use(cookieParser({}))
 
