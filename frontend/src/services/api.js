@@ -1,5 +1,6 @@
-const BASE_URL = "http://localhost:4000/api/v1"
-
+// const BASE_URL = "http://localhost:4000/api/v1"
+const BASE_URL = process.env.REACT_APP_BASE_URL
+// console.log(BASE_URL)
 
 // user end point
 export const userEndpoints = {
