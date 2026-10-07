@@ -1,7 +1,7 @@
 
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Autoplay, Pagination } from "swiper/modules";
-
+import CourseCard from "./CourseCard"
 import "swiper/css";
 import "swiper/css/pagination";
 
@@ -9,7 +9,7 @@ import "swiper/css/pagination";
 
 
 export default function CourseSlider({ Courses }) {
-    // console.log("courses",Courses)
+    console.log("courses",Courses)
   return (
     <>
       {Courses?.length > 0 ? (
@@ -40,7 +40,7 @@ export default function CourseSlider({ Courses }) {
         >
           {Courses.map((course) => (
             <SwiperSlide key={course._id}>
-              <course_Card
+              <CourseCard
                 course={course}
                 Height="h-[250px]"
               />
