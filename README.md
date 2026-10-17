@@ -5,7 +5,7 @@ A full-stack EdTech platform built using the MERN stack that enables students to
 
 ---
 
-  // "build": "CI=false react-scripts build",
+
 
 ## 🚀 Features
 
@@ -75,7 +75,8 @@ A full-stack EdTech platform built using the MERN stack that enables students to
 ```
 EdTech/
 ├── backend/
-│   ├── controllers/
+|   |- src/  
+|   ├── controllers/
 │   ├── database/
 │   ├── mail/
 │   ├── middleware/
@@ -83,66 +84,113 @@ EdTech/
 │   ├── routes/
 │   ├── utils/
 │   ├── app.js/
-│   ├── connstant.js/
-│   ├── index.js
+│   ├── constant.js/
+│  
 │   
-│── src/  
-      ├── assets   
-      ├── components   
-      ├── data   
-      ├── hooks   
-      ├── pages   
-      ├── reducers   
-      ├── services   
-      ├── slices   
-      ├── utils   
-      ├── app.js   
+│   
+│── frontend/  
+|      |-src/ 
+│      ├── assets   
+|      ├── components   
+|      ├── data   
+|      ├── hooks   
+|      ├── pages   
+|      ├── reducers   
+|      ├── services   
+|      ├── slices   
+|      ├── utils   
+|      ├── app.js   
+|      ├── App.test.js
+|      ├── index.css
+|      ├── index.js
+
+      
 └── README.md
 ```
 
 ---
 
+📋 Prerequisites
+
+Install the following before running the project:
+
+Node.js and npm
+
+MongoDB local installation or a MongoDB Atlas account
+
+Cloudinary account
+
+Git
+
+1. Clone the repository
+   
+   git clone https://github.com/kanhaiyavarnwal/Ed-Tech-Platform
+
+   cd Ed-Tech-Platform
+
+2. Install backend dependencies
+
 ## Backend Setup
 
-```bash
-cd backend
-npm install
+    cd backend
+    npm install
 
-Create `.env`
+    Create `.env`
 
-```env
-PORT=
+    ```env
+    PORT=
 
-MONGODB_URL=your_mongodb_url
+    MONGODB_URL=your_mongodb_url
 
-JWT_SECRET=your_secret
+    JWT_SECRET=your_secret
 
-MAIL_HOST=
-MAIL_USER=
-MAIL_PASS=
+    MAIL_HOST=
+    MAIL_USER=
+    MAIL_PASS=
 
-CLOUD_NAME=
-API_KEY=
-API_SECRET=
+    CLOUD_NAME=
+    API_KEY=
+    API_SECRET=
 
-RAZORPAY_KEY=
-RAZORPAY_SECRET=
+    RAZORPAY_KEY=
+    RAZORPAY_SECRET=
 
-Run Backend
+  Run Backend
 
-```bash
-npm run dev
-```
+   npm run dev
+
+   If the dev script is not configured, check package.json and use the 
+   appropriate start command.
+    
+   The backend will typically run at:
+
+     http://localhost:4000
+
 
 ---
 
 ## Frontend Setup
 
-```bash
-cd frontend
-npm install
-npm run dev
-```
+      Open another terminal:
+
+      cd frontend
+
+
+      npm install
+
+      Create the frontend .env
+
+      REACT_APP_BASE_URL=http://localhost:4000
+
+      REACT_APP_RAZORPAY_SECRET=
+
+      REACT_APP_RAZORPAY_KEY=
+
+      REACT_APP_RAZORPAY_SECRET=
+
+
+      npm run dev
+
 
 # API Modules
 
@@ -173,3 +221,28 @@ npm run dev
 - AI Recommendation System
 - Course Wishlist
 - Admin Dashboard
+
+🎯 Learning Outcomes
+
+ This project demonstrates practical experience with:
+
+ Full-stack MERN application development.
+
+ REST API design and frontend-backend integration.
+
+ Authentication and authorization.
+
+ MongoDB data modeling.
+
+ File uploads and third-party service integration.
+
+ Debugging, version control,
+
+ 👨‍💻 Author
+
+Kanhaiya Varnwal
+GitHub : https://github.com/kanhaiyavarnwal
+
+
+Portofolio: https://varnwalkanhaiya.netlify.app/
+
