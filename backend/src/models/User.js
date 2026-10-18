@@ -2,7 +2,7 @@ import mongoose, { Schema } from "mongoose";
 
 const userSchema = new Schema(
   {
-    firstName: { 
+    firstName: {
       type: String,
       required: true,
       trim: true,
@@ -32,13 +32,13 @@ const userSchema = new Schema(
       ref: "Profile",
     },
     active: {
-			type: Boolean,
-			default: true,
-		},
-		approved: {
-			type: Boolean,
-			default: true,
-		},
+      type: Boolean,
+      default: true,
+    },
+    approved: {
+      type: Boolean,
+      default: true,
+    },
     courses: [
       {
         type: Schema.Types.ObjectId,

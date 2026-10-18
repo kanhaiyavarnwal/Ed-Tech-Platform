@@ -1,144 +1,136 @@
 import { asyncHandler } from "../utils/asyncHandler.js";
-import {SubSection} from "../models/SubSection.js";
-import {Section} from "../models/Section.js";
+import { SubSection } from "../models/SubSection.js";
+import { Section } from "../models/Section.js";
 import { ApiError } from "../utils/ApiError.js";
-import { cloudinaryConnect } from "../utils/cloudinary.js";
+
 import { ApiResponse } from "../utils/ApiResponse.js";
 import { uploadImageToCloudinary } from "../utils/imageUploader.js";
 
+const createSubSection = asyncHandler(async (req, res) => {
+  // fetch data from reqbody
+  const { sectionId, title, description } = req.body;
+  console.log("req.body: ", req.body);
 
+  //extarct file/video
+  const video = req.files?.video;
+  console.log("req.files-:> ", req.files.video);
+  // validation
+  if ([sectionId, title, description].some((field) => field?.trim() === "")) {
+    throw new ApiError(400, "string type field are required");
+  }
+  if (!video) {
+    throw new ApiError(400, "video is required");
+  }
+  // if( !timeDuration ){
+  //   throw new ApiError(400,"timeduration is required")
+  // }
+  // console.log(Array.isArray(video));
+  console.log("video ", video);
+  /// upload video to cloudinary
+  const uploadDetails = await uploadImageToCloudinary(
+    video,
+    process.env.FOLDER_NAME,
+  );
 
-const createSubSection = asyncHandler(async(req , res)=>{
-       // fetch data from reqbody
-       const {sectionId, title,description} = req.body
-       console.log("req.body: ",req.body)
-     
-       //extarct file/video
-       const video = req.files?.video
-       console.log("req.files-:> ",req.files.video)
-       // validation
-       if ([sectionId, title, description].some((field)=>
-    field?.trim()===""
-    )){
-        throw new ApiError(400, "string type field are required")
-    }
-    if(!video ){
-        throw new ApiError(400, "video is required")
-    }
-    // if( !timeDuration ){
-    //   throw new ApiError(400,"timeduration is required")
-    // }
-    // console.log(Array.isArray(video));
-    console.log("video ",video)
-       /// upload video to cloudinary
-       const uploadDetails = await uploadImageToCloudinary(video,process.env.FOLDER_NAME)
+  //  console.log("uploadDetails -> ",uploadDetails?.secure_url)
+  // fetch url from cloudinary
 
+  // create subsection
+  const subSectionDetails = await SubSection.create({
+    title: title,
+    timeDuration: `${uploadDetails.duration}`,
+    description: description,
+    videoUrl: uploadDetails?.secure_url,
+  });
+  //  console.log("subSection details after uploaod on cloudinary-> ",subSectionDetails)
+  // update section with this subsection
+  const updatedSection = await Section.findByIdAndUpdate(
+    { _id: sectionId },
+    {
+      $push: {
+        subSection: subSectionDetails._id,
+      },
+    },
+    { new: true },
+  ).populate("subSection");
+  // hw : log  updateed section here after, adding populate query
+  // return res
+  console.log("updatedSections->", updatedSection);
+  return res.json(
+    new ApiResponse(201, updatedSection, "Sub Section created successfully"),
+  );
+});
 
-      //  console.log("uploadDetails -> ",uploadDetails?.secure_url)
-       // fetch url from cloudinary
+const updateSubSection = asyncHandler(async (req, res) => {
+  // data fetch
 
-       // create subsection
-       const subSectionDetails = await SubSection.create({
-         title:title,
-         timeDuration:`${uploadDetails.duration}`,
-         description:description,
-         videoUrl:uploadDetails?.secure_url,
-       })
-      //  console.log("subSection details after uploaod on cloudinary-> ",subSectionDetails)
-       // update section with this subsection
-       const updatedSection =  await Section.findByIdAndUpdate({_id:sectionId},
-                                {
-                                    $push:{
-                                        subSection:subSectionDetails._id
-                                    }
-                                },{new:true}).populate("subSection")
-                                // hw : log  updateed section here after, adding populate query
-       // return res
-       console.log("updatedSections->",updatedSection)
-       return res
-      
-       .json(
-        new ApiResponse(201,updatedSection,"Sub Section created successfully")
-       )
+  const { sectionId, subSectionId, title, description } = req.body;
+  const subSection = await SubSection.findById(subSectionId);
 
-})
+  console.log("req/.body-> ", req.body);
+  console.log("subSection-> ", subSection);
 
-const updateSubSection = asyncHandler(async(req , res)=>{
-        // data fetch
+  if (!subSection) {
+    throw new ApiError(404, "subSection not found");
+  }
 
-  const { sectionId, subSectionId, title, description } = req.body
-    const subSection = await SubSection.findById(subSectionId)
+  if (title !== undefined) {
+    subSection.title = title;
+  }
 
-    console.log("req/.body-> ",req.body)
-    console.log("subSection-> ",subSection)
+  if (description !== undefined) {
+    subSection.description = description;
+  }
 
-    if(!subSection){
-        throw new ApiError(404,"subSection not found")
-    }
-     
-         if (title !== undefined) {
-      subSection.title = title
-    }
+  if (req.files && req.files.video !== undefined) {
+    const video = req.files.video;
+    const uploadDetails = await uploadImageToCloudinary(
+      video,
+      process.env.FOLDER_NAME,
+    );
+    console.log("uploadDetails ->", uploadDetails);
 
-    if (description !== undefined) {
-      subSection.description = description
-    }
+    subSection.videoUrl = uploadDetails.secure_url;
+    subSection.timeDuration = `${uploadDetails.duration}`;
+  }
 
-    if (req.files && req.files.video !== undefined) {
-      const video = req.files.video
-      const uploadDetails = await uploadImageToCloudinary(
-        video,
-        process.env.FOLDER_NAME
-        )
-        console.log("uploadDetails ->",uploadDetails)
+  await subSection.save();
 
-         subSection.videoUrl = uploadDetails.secure_url
-      subSection.timeDuration = `${uploadDetails.duration}`
-    }
+  // find updated section and return it
+  const updatedSection =
+    await Section.findById(sectionId).populate("subSection");
 
-    await subSection.save()
+  console.log("updated section", updatedSection);
 
-    // find updated section and return it
-    const updatedSection = await Section.findById(sectionId).populate(
-      "subSection"
-    )
+  return res.json(
+    new ApiResponse(200, updatedSection, "section updated successfully"),
+  );
+});
 
-    console.log("updated section", updatedSection)
+const deleteSubSection = asyncHandler(async (req, res) => {
+  const { subSectionId, sectionId } = req.body;
 
-    return res.json(
-        new ApiResponse(200,updatedSection,"section updated successfully")
-    )
+  const updatedSection1 = await Section.findByIdAndUpdate(
+    { _id: sectionId },
+    {
+      $pull: {
+        subSection: subSectionId,
+      },
+    },
+  );
+  console.log("updatedSecdtion1 -> ", updatedSection1);
 
-})
+  const subSection = await SubSection.findByIdAndDelete({ _id: subSectionId });
+  if (!subSection) {
+    throw new ApiError(404, "subSection not found");
+  }
+  // find updated section and return it
+  const updatedSection =
+    await Section.findById(sectionId).populate("subSection");
 
-const deleteSubSection = asyncHandler(async(req , res)=>{
-     const {subSectionId , sectionId} = req.body
+  return res.json(
+    new ApiResponse(200, updatedSection, "subSection deleted successfully"),
+  );
+});
 
-    const updatedSection1 = await Section.findByIdAndUpdate(
-        {_id: sectionId},
-        {
-            $pull: {
-                subSection : subSectionId,
-            }
-        }
-     )
-     console.log("updatedSecdtion1 -> ",updatedSection1)
-
- const subSection = await SubSection.findByIdAndDelete({ _id: subSectionId })
-   if(!subSection){
-    throw new ApiError(404,"subSection not found")
-   }
-      // find updated section and return it
-    const updatedSection = await Section.findById(sectionId).populate(
-      "subSection"
-    )
-
-
-    return res.json(
-        new ApiResponse(200,updatedSection,"subSection deleted successfully")
-    )
-
-})
-
-
-export{createSubSection,updateSubSection,deleteSubSection}
+export { createSubSection, updateSubSection, deleteSubSection };

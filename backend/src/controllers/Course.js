@@ -1,4 +1,4 @@
-import { cloudinaryConnect } from "../utils/cloudinary.js";
+
 import {Course} from "../models/Course.js"
 import { Section } from "../models/Section.js";
 import {Category} from "../models/Category.js"
@@ -108,7 +108,7 @@ const createCourse = asyncHandler(async(req , res)=> {
     ) 
     
     // add the course to the category
-     const categoryDetails2 = await Category.findByIdAndUpdate(
+     await Category.findByIdAndUpdate(
                         {_id: category},
                         {$push:{
                           courses: newCourse._id
@@ -231,7 +231,7 @@ const getCourseDetails = asyncHandler(async(req,res)=>{
     if(!courseDetails){
         throw new ApiError(400,`could not find the course with ${courseId}`)
     }
- console.log("all course details : ",courseDetails)
+//  console.log("all course details : ",courseDetails)
     let totalDurationInSeconds = 0
     courseDetails.courseContent.forEach((content) => {
       content.subSection.forEach((subSection) => {
@@ -282,7 +282,7 @@ let courseProgressCount = await Course.findOne({
       userId: userId,
     })
 
-       console.log("courseProgressCount : ", courseProgressCount)
+      //  console.log("courseProgressCount : ", courseProgressCount)
        
 
        if(!courseDetails){
@@ -320,7 +320,7 @@ let courseProgressCount = await Course.findOne({
 
       // find all course belonging to the user
    
-const allCourses = await Course.find();
+ await Course.find();
 
 
       const instructorCourses = await Course.find({instructor: instructorId})

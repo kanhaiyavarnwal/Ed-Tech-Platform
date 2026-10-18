@@ -8,71 +8,43 @@ import { ApiResponse } from "../utils/ApiResponse.js";
 import jwt from "jsonwebtoken";
 import bcrypt from "bcrypt";
 import { mailSender } from "../utils/mailSender.js";
-import { otpTemplate } from "../mail/templates/emailVerification.js"
-import { courseEnrollmentEmail } from "../mail/templates/courseEnrollmentEmail.js";
-
-
-
+import { otpTemplate } from "../mail/templates/emailVerification.js";
 
 
 const sentOtp = asyncHandler(async (req, res) => {
-  
+  const { email } = req.body;
 
-    const { email } = req.body;
+  // Check user
 
-    // Check user
-  
+  const userExists = await User.exists({ email });
 
-    const userExists = await User.exists({ email });
+  if (userExists) {
+    throw new ApiError(400, "User already registered");
+  }
 
+  // Generate OTP
 
+  const otp = otpGenerator.generate(6, {
+    upperCaseAlphabets: false,
+    lowerCaseAlphabets: false,
+    specialChars: false,
+  });
 
-    if (userExists) {
-        throw new ApiError(400, "User already registered");
-    }
+  await OTP.findOneAndUpdate({ email }, { otp }, { upsert: true, new: true });
 
-    // Generate OTP
-  
-
-    const otp = otpGenerator.generate(6, {
-        upperCaseAlphabets: false,
-        lowerCaseAlphabets: false,
-        specialChars: false,
+  // Send email asynchronously
+  mailSender(email, "Verification Email from StudyNotion", otpTemplate(otp))
+    .then(() => {
+      console.log("OTP email sent");
+    })
+    .catch((error) => {
+      console.error("OTP email failed:", error.message);
     });
 
-    
-
-
-    await OTP.findOneAndUpdate({email},
-      {otp,
-
-      },
-      {upsert:true, new:true}
-    )
-
-  
-
-    // Send email asynchronously
-    mailSender(
-        email,
-        "Verification Email from StudyNotion",
-        otpTemplate(otp)
-    ).then(() => {
-        console.log("OTP email sent");
-    }).catch((error) => {
-        console.error("OTP email failed:", error.message);
-    });
-
-
-    return res.status(200).json(
-        new ApiResponse(
-            200,
-            {},
-            "OTP sent to your email"
-        )
-    );
+  return res
+    .status(200)
+    .json(new ApiResponse(200, {}, "OTP sent to your email"));
 });
-
 
 const signUp = asyncHandler(async (req, res) => {
   const {
@@ -142,9 +114,7 @@ const signUp = asyncHandler(async (req, res) => {
     image: `https://api.dicebear.com/9.x/initials/svg?seed=${firstName}%20${lastName}`,
   });
 
-  return res
-    
-    .json(new ApiResponse(201, user, "successfully signup"));
+  return res.json(new ApiResponse(201, user, "successfully signup"));
 });
 
 const login = asyncHandler(async (req, res) => {
@@ -167,8 +137,8 @@ const login = asyncHandler(async (req, res) => {
       accountType: user.accountType,
     };
     const token = jwt.sign(payload, process.env.JWT_SECRET, {
-      // yha errror aayega
-      expiresIn: "16h",
+      // yha errror aayega bcz of at=fter 16 h token expire
+      expiresIn: "15d",
     });
     user.token = token;
     user.password = undefined;
@@ -180,7 +150,7 @@ const login = asyncHandler(async (req, res) => {
 
     res
       .cookie("token", token, options)
-      
+
       .json(new ApiResponse(200, { user, token }, "login successfully"));
     // console.log("token:after login ",token , options)
   } else {
@@ -193,13 +163,6 @@ const login = asyncHandler(async (req, res) => {
 
 // change password
 const changePassword = asyncHandler(async (req, res) => {
-  // get data from body
-  // password newPaswword, confirmpassword
-  // validate newPass,confirmPass
-
-  // update on db
-  // send email password updated
-  // return response
   const { oldPassword, newPassword, confirmPassword } = req.body;
 
   if (!oldPassword) {
@@ -242,9 +205,7 @@ const changePassword = asyncHandler(async (req, res) => {
     "Your password has been changed successfully.",
   );
 
-  return res
-    
-    .json(new ApiResponse(200, null, "password successfully change"));
+  return res.json(new ApiResponse(200, null, "password successfully change"));
 });
 
 export { sentOtp, signUp, login, changePassword };
