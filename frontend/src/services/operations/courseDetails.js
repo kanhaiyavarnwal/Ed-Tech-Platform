@@ -45,30 +45,73 @@ export const getAllCourses = async () =>{
     return result;
 }
 
-export const fetchCourseDetails = async(courseId)=>{
-   console.log("course id ",courseId)
-   console.log("course details api: ",COURSE_DETAILS_API)
-      const toastId = toast.loading("Loading...")
-       let result = null
+// export const fetchCourseDetails = async(courseId)=>{
+//    console.log("course id ",courseId)
+//    console.log("course details api: ",COURSE_DETAILS_API)
+//       const toastId = toast.loading("Loading...")
+//        let result = null
 
-       try{
-        const response = await apiConnector("GET", COURSE_DETAILS_API,{
-            courseId,
-        })
-        console.log("course details api res: ",response)
+//        try{
+//         const response = await apiConnector("GET", COURSE_DETAILS_API,{
+//             courseId,
+//         })
+//         console.log("course details api res: ",response)
 
-        if (!response.data.success) {
-         throw new Error(response.data.message)
-       }
-       result = response.data
+//         if (!response.data.success) {
+//          throw new Error(response.data.message)
+//        }
+//        result = response.data
 
-       }catch(err){
-        console.log("course details api error : ",err.message)
-        //  result = err.response.data
-       }
-        toast.dismiss(toastId)
-        return result
-}
+//        }catch(err){
+//         console.log("course details api error : ",err.message)
+//         //  result = err.response.data
+//        }
+//         toast.dismiss(toastId)
+//         return result
+// }
+
+export const fetchCourseDetails = async (courseId) => {
+  // console.log("Course ID:", courseId);
+  // console.log("Course API:", COURSE_DETAILS_API);
+
+  const toastId = toast.loading("Loading course...");
+
+  try {
+    const response = await apiConnector(
+      "GET",
+      COURSE_DETAILS_API,
+      null,
+      null,
+      { courseId }
+    );
+
+    // console.log("Course details response:", response.data);
+
+    if (!response.data.success) {
+      throw new Error(
+        response.data.message || "Failed to fetch course details"
+      );
+    }
+
+    return response.data;
+  } catch (err) {
+    console.error("Course API error:", {
+      status: err.response?.status,
+      message: err.response?.data?.message || err.message,
+      url: err.config?.url,
+    });
+
+    toast.error(
+      err.response?.data?.message || "Unable to fetch course details"
+    );
+
+    return null;
+  } finally {
+    toast.dismiss(toastId);
+  }
+};
+
+
 
 // fetch course category
 export const fetchCourseCategories = async () => {

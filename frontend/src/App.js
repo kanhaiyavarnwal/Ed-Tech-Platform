@@ -23,7 +23,7 @@ import AddCourse from "./components/core/Dashboard/addCourses/Index"
 import MyCourse from "./components/core/Dashboard/MyCourses"
 import EditCourse from "./components/core/Dashboard/Editcourse/index"
 import Catalog from './pages/Catalog'
-import CourseDetails from './pages/CourseDetails'
+import CourseDetailsPage from './pages/CourseDetailsPage'
 
 export default function App() {
     const { user } = useSelector((state) => state.profile);
@@ -40,7 +40,7 @@ export default function App() {
      <Route path="/verify-email" element={<OpenRoute><VerifyEmail/></OpenRoute>}/>
      <Route path="/about" element={<About/>}/>
      <Route path="/contact" element={<Contact/>}/>
-     <Route path = "/course/:courseId" element={<CourseDetails/>}/>
+     <Route path = "/course/:courseId" element={<CourseDetailsPage/>}/>
     
      <Route path="*" element={<Error/>}/>
       <Route 

@@ -89,7 +89,7 @@ export async function buyCourse(token,user, courses,  navigate, dispatch) {
     }
     catch(err) {
         console.log("payment api err: ", err.message);
-        toast.error("Could not make Payment");
+        toast.error( "Could not make payment Try after some time or check you already buy this course"||err.message);
     }
     toast.dismiss(toastId);
 }

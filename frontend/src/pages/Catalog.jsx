@@ -7,7 +7,7 @@ import { categories } from "../services/api";
 import { getCatalogPageData } from "../services/operations/pageAndComponentsData";
 import { useSelector } from "react-redux";
 import CourseSlider from "../components/core/Catalog/CourseSlider";
-import CourseCard from "../components/core/Catalog/Course_Card";
+import CourseCard from "../components/core/Catalog/CourseCard";
 
 
 export default function Catalog() {
