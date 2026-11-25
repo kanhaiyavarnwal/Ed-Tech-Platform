@@ -13,7 +13,7 @@ import { otpTemplate } from "../mail/templates/emailVerification.js";
 
 const sentOtp = asyncHandler(async (req, res) => {
   const { email } = req.body;
-
+//  console.log(req.body)
   // Check user
 
   const userExists = await User.exists({ email });
@@ -30,8 +30,8 @@ const sentOtp = asyncHandler(async (req, res) => {
     specialChars: false,
   });
 
-  await OTP.findOneAndUpdate({ email }, { otp }, { upsert: true, new: true });
-
+ const otpBody= await OTP.findOneAndUpdate({ email }, { otp }, { upsert: true, new: true });
+// console.log(otpBody)
   // Send email asynchronously
   mailSender(email, "Verification Email from StudyNotion", otpTemplate(otp))
     .then(() => {

@@ -36,7 +36,7 @@ export function sendOtp(email,navigate){
 
         }catch(err){
             console.log("send otp api err in the operation -> ",err.message)
-            toast.error(err.message)
+            toast.error(err)
         }
         dispatch(setLoading(false))
     toast.dismiss(toastId)

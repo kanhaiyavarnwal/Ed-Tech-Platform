@@ -24,11 +24,12 @@ const createCategory = asyncHandler(async (req, res) => {
 });
 
 const getAllCategory = asyncHandler(async (req, res) => {
+  console.time("categarytimer")
   const allCategories = await Category.find(
     {},
     { name: true, description: true },
   ).populate("courses");
-
+ console.timeEnd("categarytimer")
   res.json(
     new ApiResponse(201, allCategories, "All category returnd successfully"),
   );

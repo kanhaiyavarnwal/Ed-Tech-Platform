@@ -72,7 +72,7 @@ A full-stack EdTech platform built using the MERN stack that enables students to
 - Razorpay
 
 
-```
+
 EdTech/
 ├── backend/
 |   |- src/  
@@ -103,10 +103,10 @@ EdTech/
 |      ├── App.test.js
 |      ├── index.css
 |      ├── index.js
-
-      
+|
+|     
 └── README.md
-```
+
 
 ---
 
